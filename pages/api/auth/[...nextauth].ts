@@ -50,7 +50,7 @@ export const authOptions: AuthOptions = {
         );
 
         if (!isCorrectPassword) {
-          throw new Error("Invalid credentials");
+          throw new Error("Sai thông tin tài khoản");
         }
 
         return user;

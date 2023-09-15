@@ -6,6 +6,8 @@ import Navbar from "@/components/navbar/navbar";
 import ClientOnly from "@/components/client-only";
 import RegisterModal from "@/components/modal/register-modal";
 import ToasterProvider from "@/components/providers/toaster-provider";
+import LoginModal from "@/components/modal/login-modal";
+import getCurrentUser from "@/actions/get-current-user";
 const font = Nunito({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -13,18 +15,21 @@ export const metadata: Metadata = {
   description: "Đặt nhà nghỉ khách sạn trực tuyến ngay hôm nay",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const currentUser = await getCurrentUser();
+
   return (
     <html lang="en">
       <body className={font.className}>
         <ClientOnly>
           <ToasterProvider />
+          <LoginModal />
           <RegisterModal />
-          <Navbar />
+          <Navbar currentUser={currentUser} />
         </ClientOnly>
         {children}
       </body>
