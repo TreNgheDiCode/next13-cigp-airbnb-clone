@@ -5,9 +5,11 @@ import { useCallback, useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "../avatar";
 import MenuItem from "./menu-item";
+import useRegisterModal from "@/hooks/use-register-modal";
 
 const UserMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { onOpen } = useRegisterModal();
 
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
@@ -20,7 +22,7 @@ const UserMenu = () => {
           onClick={() => {}}
           className="hidden md:block text-sm font-semibold py-3 px-4 rounded-full hover:bg-neutral-100 transition cursor-pointer"
         >
-          Airbnb your home
+          Airbnb đến nhà bạn
         </div>
         <div
           onClick={toggleOpen}
@@ -39,7 +41,7 @@ const UserMenu = () => {
           <div className="flex flex-col cursor-pointer">
             <>
               <MenuItem onClick={() => {}} label="Đăng nhập" />
-              <MenuItem onClick={() => {}} label="Đăng ký" />
+              <MenuItem onClick={onOpen} label="Đăng ký" />
             </>
           </div>
         </div>

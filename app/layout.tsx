@@ -3,6 +3,10 @@ import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
 
 import Navbar from "@/components/navbar/navbar";
+import ClientOnly from "@/components/client-only";
+import Modal from "@/components/modal/modal";
+import RegisterModal from "@/components/modal/register-modal";
+import ToasterProvider from "@/components/providers/toaster-provider";
 const font = Nunito({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -18,9 +22,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={font.className}>
-        <Navbar />
+        <ClientOnly>
+          <ToasterProvider />
+          <RegisterModal />
+          <Navbar />
+        </ClientOnly>
         {children}
-        </body>
+      </body>
     </html>
   );
 }
