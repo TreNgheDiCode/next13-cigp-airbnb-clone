@@ -1,15 +1,19 @@
 import { create } from "zustand";
 
-interface RegisterModalStore {
+export type ModalType = "register" | "login";
+
+interface ModalStore {
+  type: ModalType | null;
   isOpen: boolean;
-  onOpen: () => void;
+  onOpen: (type: ModalType) => void;
   onClose: () => void;
 }
 
-const useRegisterModal = create<RegisterModalStore>((set) => ({
+const useModal = create<ModalStore>((set) => ({
+  type: null,
   isOpen: false,
-  onOpen: () => set({ isOpen: true }),
-  onClose: () => set({ isOpen: false }),
+  onOpen: (type) => set({ isOpen: true, type }),
+  onClose: () => set({ isOpen: false, type: null }),
 }));
 
-export default useRegisterModal;
+export default useModal;

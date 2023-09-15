@@ -4,23 +4,41 @@ import axios from "axios";
 import { AiFillGithub } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { BsFacebook } from "react-icons/bs";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
-import useRegisterModal from "@/hooks/use-register-modal";
+import useModal from "@/hooks/use-register-modal";
 import Modal from "./modal";
 import Heading from "../heading";
 import Input from "../input/input";
 import Button from "../button";
+import { useRouter } from "next/navigation";
 
 const RegisterModal = () => {
-  const { onClose, onOpen, isOpen } = useRegisterModal();
+  const { onClose, type, isOpen } = useModal();
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
+  const modalOpen = isOpen && type === "register";
+
+  const nameValidate = {
+    minLength: (value: any) => value.length >= 5,
+    matchPattern: (value: any) => /^[a-zA-Z0-9_]+$/.test(value),
+  };
+
+  const emailValidate = {
+    maxLength: (v: any) =>
+      v.length <= 50 || "The email should have at most 50 characters",
+    matchPattern: (v: any) =>
+      /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+      "Email address must be a valid address",
+  };
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
@@ -38,11 +56,14 @@ const RegisterModal = () => {
         toast.error(`${error}`);
       });
 
-      onClose();
+      toast.success(`Đăng ký thành công`);
     } catch (error) {
       console.log(error);
       toast.error("Lỗi khi dăng nhập");
     } finally {
+      reset();
+      router.refresh();
+      onClose();
       setIsLoading(false);
     }
   };
@@ -57,21 +78,26 @@ const RegisterModal = () => {
       <Input
         id="email"
         label="Email"
+        type="email"
         disabled={isLoading}
         register={register}
         errors={errors}
+        validate={emailValidate}
         required
       />
       <Input
         id="name"
+        type="text"
         label="Tên người dùng"
         disabled={isLoading}
         register={register}
         errors={errors}
+        validate={nameValidate}
         required
       />
       <Input
         id="password"
+        type="password"
         label="Mật khẩu"
         disabled={isLoading}
         register={register}
@@ -119,9 +145,9 @@ const RegisterModal = () => {
   return (
     <Modal
       disabled={isLoading}
-      isOpen={isOpen}
+      isOpen={modalOpen}
       title="Đăng ký"
-      actionLabel="Tiếp tục"
+      actionLabel="Đăng ký"
       onClose={onClose}
       onSubmit={handleSubmit(onSubmit)}
       body={bodyContent}
