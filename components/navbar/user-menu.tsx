@@ -57,7 +57,13 @@ const UserMenu = ({ currentUser }: UserMenuProps) => {
               </>
             ) : (
               <>
-                <MenuItem onClick={() => onOpen("login")} label="Đăng nhập" />
+                <MenuItem
+                  onClick={() => {
+                    onOpen("login");
+                    setIsOpen(false);
+                  }}
+                  label="Đăng nhập"
+                />
                 <MenuItem onClick={() => onOpen("register")} label="Đăng ký" />
               </>
             )}

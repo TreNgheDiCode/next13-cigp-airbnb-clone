@@ -6,15 +6,15 @@ import { FcGoogle } from "react-icons/fc";
 import { BsFacebook } from "react-icons/bs";
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { signIn } from "next-auth/react";
 
 import useModal from "@/hooks/use-register-modal";
 import Modal from "./modal";
 import Heading from "../heading";
 import Input from "../input/input";
 import Button from "../button";
-import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
 
 const RegisterModal = () => {
   const { onClose, type, isOpen } = useModal();
