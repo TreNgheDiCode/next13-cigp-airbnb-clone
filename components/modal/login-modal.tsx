@@ -5,11 +5,11 @@ import { signIn } from "next-auth/react";
 import { AiFillGithub } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { BsFacebook } from "react-icons/bs";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
-import useModal from "@/hooks/use-register-modal";
+import useModal from "@/hooks/use-modal";
 import Modal from "./modal";
 import Heading from "../heading";
 import Input from "../input/input";
@@ -17,7 +17,7 @@ import Button from "../button";
 import { useRouter } from "next/navigation";
 
 const LoginModal = () => {
-  const { onClose, type, isOpen } = useModal();
+  const { onClose, type, isOpen, onOpen } = useModal();
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
@@ -65,6 +65,11 @@ const LoginModal = () => {
       }
     });
   };
+
+  const toggle = useCallback(() => {
+    onClose();
+    onOpen("register");
+  }, [onClose, onOpen]);
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
@@ -118,12 +123,12 @@ const LoginModal = () => {
       />
       <div className="text-neutral-500 text-center mt-4 font-light">
         <div className="flex flex-row justify-center items-center gap-2">
-          <div>Đã có tài khoản?</div>
+          <div>Lần đầu trải nghiệm AirBnb?</div>
           <div
-            onClick={onClose}
+            onClick={toggle}
             className="text-rose-500 font-semibold cursor-pointer hover:underline"
           >
-            Đăng nhập
+            Tạo tài khoản
           </div>
         </div>
       </div>

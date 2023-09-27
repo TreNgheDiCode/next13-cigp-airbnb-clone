@@ -4,20 +4,20 @@ import axios from "axios";
 import { AiFillGithub } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { BsFacebook } from "react-icons/bs";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { signIn } from "next-auth/react";
 
-import useModal from "@/hooks/use-register-modal";
+import useModal from "@/hooks/use-modal";
 import Modal from "./modal";
 import Heading from "../heading";
 import Input from "../input/input";
 import Button from "../button";
 
 const RegisterModal = () => {
-  const { onClose, type, isOpen } = useModal();
+  const { onClose, type, isOpen, onOpen } = useModal();
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
@@ -69,6 +69,11 @@ const RegisterModal = () => {
     }
   };
 
+  const toggle = useCallback(() => {
+    onClose();
+    onOpen("login");
+  }, [onClose, onOpen]);
+
   const bodyContent = (
     <div className="flex flex-col gap-4">
       <Heading
@@ -115,25 +120,25 @@ const RegisterModal = () => {
         outline
         label="Tiếp tục với Google"
         icon={FcGoogle}
-        onClick={() => signIn('google')}
+        onClick={() => signIn("google")}
       />
       <Button
         outline
         label="Tiếp tục với Facebook"
         icon={BsFacebook}
-        onClick={() => signIn('facebook')}
+        onClick={() => signIn("facebook")}
       />
       <Button
         outline
         label="Tiếp tục với Github"
         icon={AiFillGithub}
-        onClick={() => signIn('github')}
+        onClick={() => signIn("github")}
       />
       <div className="text-neutral-500 text-center mt-4 font-light">
         <div className="flex flex-row justify-center items-center gap-2">
           <div>Đã có tài khoản?</div>
           <div
-            onClick={onClose}
+            onClick={toggle}
             className="text-rose-500 font-semibold cursor-pointer hover:underline"
           >
             Đăng nhập
